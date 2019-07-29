@@ -1,5 +1,7 @@
-const toDoHeadStart = 'Recurring Heading, calender week gets appended';
-const permanentTags = ['recurring', 'tags'];
+const tpContext = 'Context';
+const toDoHeadStart =
+    tpContext + ': Recurring Heading, calender week gets appended';
+const permanentTags = [tpContext.toLowerCase(), 'recurring', 'tags'];
 
 // zuletzt erzeugtes isc-todo auswählen
 const [lastWeek] = Draft.query(
@@ -33,7 +35,7 @@ newWeek.update();
 lastWeek.isArchived = true;
 lastWeek.update();
 
-// jetzt noch die in copied speichern und die neu angelegte liste anzeigen
+// jetzt noch die id in icloud speichern
 uuid = newWeek.uuid;
 app.openURL(
     'copied://x-callback-url/save?text=' +
@@ -41,3 +43,7 @@ app.openURL(
         '&x-success=drafts5://open?uuid=' +
         uuid,
 );
+
+// uuid auch in der icloud speichern
+const fmCloud = FileManager.createCloud();
+fmCloud.writeString(`./${tpContext.toLowerCase()}.uuid`, uuid);
